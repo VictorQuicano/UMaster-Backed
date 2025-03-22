@@ -1,0 +1,10 @@
+# Enviroment
+venv/
+
+# Enviroment files
+.env
+
+# Files
+*.sqlite3
+*.sqlite3-journal
+*.sqlite
