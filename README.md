@@ -57,11 +57,6 @@ This project uses Django REST Framework authentication. Make sure to include an 
 
 Copy the `.env-example` file in the `.env`.
 
-```env
-SECRET_KEY=your_secret_key
-DATABASE_URL=postgres://user:password@localhost:5432/db_name
-```
-
 ## ✅Deployment
 
 1. Configure a production-ready database (e.g., PostgreSQL)
