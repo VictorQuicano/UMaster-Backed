@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from authorization.models import User, Institution
+from .enums import AnswerStatus
 
 class Area(models.Model):
     name = models.CharField(max_length=255)
@@ -60,17 +61,9 @@ class Answer(models.Model):
         return f"{self.body} - {'Correct' if self.is_correct else 'Incorrect'}"
 
 class UserAnswer(models.Model):
-    STATUS = [
-        ('U', 'Unused'),
-        ('I', 'Incorrect'),
-        ('M', 'Marked'),
-        ('O', 'Omited'),
-        ('C', 'Correct')
-    ]
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    status = models.CharField(max_length=1, choices=STATUS, default='U')
+    status = models.SmallIntegerField(choices=AnswerStatus.choices, default=AnswerStatus.UNUSED)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

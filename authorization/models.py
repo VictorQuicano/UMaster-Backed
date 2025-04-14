@@ -3,7 +3,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
-
+from .enums import InstitutionType
+    
 class Plan(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -40,15 +41,9 @@ class Suscription(models.Model):
         ordering = ['-start_plan_date']
 
 class Institution(models.Model):
-    TYPES = [
-        ('U', 'University'),
-        ('A', 'Academy'),
-        ('S', 'School'),
-        ('O', 'Other'),
-    ]
 
     name = models.CharField(max_length=255)
-    institution_type = models.CharField(max_length=1, choices=TYPES, default='O')
+    institution_type = models.SmallIntegerField(choices=InstitutionType.choices, default=InstitutionType.OTHER)    
 
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,15 +57,14 @@ class Institution(models.Model):
         ordering = ['created_at']
 
 class User(AbstractUser):
-    email_verified_at = models.BooleanField(default=False)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE, blank=True, null=True)    
     groups = models.ManyToManyField(
         Group,
-        related_name="custom_user_set",  # Cambia el related_name
+        related_name="custom_user_set",
         blank=True
     )
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name="custom_user_permissions_set",  # Cambia el related_name
+        related_name="custom_user_permissions_set",
         blank=True
     )
