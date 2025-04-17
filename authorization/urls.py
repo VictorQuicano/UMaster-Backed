@@ -1,18 +1,25 @@
 from django.urls import path, include
-from rest_framework import routers
-from authorization.views import RegisterView
-from authorization.views import LoginView
-from authorization.views import VerifyEmailView
-from authorization.views import InstitutionView
-from authorization.views import ReSentVerificationEmail
-from authorization.views import UserView
+from rest_framework.routers import DefaultRouter
+from .views.auth_views import RegisterView
+from .views.auth_views import (
+    RegisterView, ResendVerificationEmailView, VerifyEmailView,
+    LoginView, LogoutView, RefreshTokenView,
+    PasswordResetRequestView, ResetPasswordView
+)
+from .views.resource_views import InstitutionViewSet, UserViewSet
 
+router = DefaultRouter()
+router.register(r'institutions', InstitutionViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('users/', UserView.as_view({'get': 'list', 'post': 'create'}), name='user-list'),
-    path('institutions/', InstitutionView.as_view({'get': 'list', 'post': 'create'}), name='institution-list'),
+    path('', include(router.urls)),
     path('register/', RegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='login'),
     path('email-verify/', VerifyEmailView.as_view(), name='email-verify'),
-    path('resent-verification-email/', ReSentVerificationEmail.as_view(), name='resent-verification-email'),
+    path('resend-verification/', ResendVerificationEmailView.as_view(), name='resend-verification'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('token/refresh/', RefreshTokenView.as_view(), name='token-refresh'),
+    path('password-reset-request/', PasswordResetRequestView.as_view(), name='password-reset-request'),
+    path('reset-password/', ResetPasswordView.as_view(), name='reset-password'),
 ]
