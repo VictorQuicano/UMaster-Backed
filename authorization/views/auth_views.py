@@ -26,7 +26,7 @@ class RegisterView(APIView):
         user = serializer.save()
         user.save()
 
-        token = TokenService.generate_token_for_user(user).access_token
+        token = TokenService.generate_token_for_user(user).get("access")
         EmailService.send_verification_email(user, token)
 
         return Response(
@@ -54,7 +54,7 @@ class ResendVerificationEmailView(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            token = TokenService.generate_token_for_user(user).access_token
+            token = TokenService.generate_token_for_user(user).get("access")
             EmailService.send_verification_email(user, token)
 
             return Response(

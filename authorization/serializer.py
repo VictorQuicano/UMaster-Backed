@@ -6,7 +6,6 @@ from .models import User, Institution
 
 class InstitutionSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=255, required=True)
-    # institution_type = serializers.ChoiceField(choices=InstitutionType.choices, required=True)
 
     class Meta:
         model = Institution

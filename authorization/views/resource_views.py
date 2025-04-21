@@ -3,7 +3,6 @@ from ..models import User, Institution
 from ..serializer import InstitutionSerializer, UserSerializer
 
 class InstitutionViewSet(viewsets.ModelViewSet):
-    """ViewSet for CRUD of institutions"""
     permission_classes = [permissions.IsAuthenticated]
     queryset = Institution.objects.all()
     serializer_class = InstitutionSerializer
